@@ -1,4 +1,4 @@
-package forJavaTest;
+package appli;
 
 import java.util.Scanner;
 import java.io.File;
