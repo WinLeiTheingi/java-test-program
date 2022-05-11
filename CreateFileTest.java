@@ -1,41 +1,37 @@
-/**
- * CreateFileTest.java
- */
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /**
+ * Test CreateFie.java
+ * 
  * @author winleitheingi
+ * created in 2022/05/10
  *
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CreateFileTest {
-
-	private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-    private static final InputStream stdin = System.in;
-    private static final PrintStream stdout = System.out;
-    
 	// output file path
 	private static File newFile;
 	
 	// output file name
 	private static final String OUTPUT_FILE_NAME = "outputData.txt";
+	
+	// read output
+	private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     
 	/**
 	 * @throws java.lang.Exception
@@ -49,45 +45,18 @@ class CreateFileTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-		System.setIn(stdin);
-		System.setOut(stdout);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeEach
 	void setUp() throws Exception {
 		System.setOut(new PrintStream(out));
 	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
-	/**
-	 * test main method
-	 * normal case
-	 */
-	@Test
-	void testMain() {
-		//String[] args = null;
-		//CreateFile.main(args);
-		
-		// check success. todo
-	}
 	
 	/**
 	 * test getUserInput method
-	 * normal case : test minimum value, when number of lines is "1"
+	 * normal case : test minimum value => when number of lines is "1"
 	 * expected    : show success message
 	 */
 	@Test
+	@Order(1)
 	void testUserInput_Min() {
 		ByteArrayInputStream in = new ByteArrayInputStream("1".getBytes());
 		System.setIn(in);
@@ -106,10 +75,11 @@ class CreateFileTest {
 	
 	/**
 	 * test getUserInput method
-	 * normal case : test maximum value, when number of lines is "229"
+	 * normal case : test maximum value => when number of lines is "229"
 	 * expected    : show success message
 	 */
 	@Test
+	@Order(2)
 	void testUserInput_Max() {
 		ByteArrayInputStream in = new ByteArrayInputStream("229".getBytes());
 		System.setIn(in);
@@ -128,47 +98,79 @@ class CreateFileTest {
 	  
 	/**
 	 * test getUserInput method
-	 * abnormal case : test number range, when number of lines is "<1"
+	 * abnormal case : test number range => when number of lines is "<1"
 	 * expected      : show error message
+	 * other comment : if invalid data, will prompt user input again in actual program
 	 */
 	@Test
-	void testUserInput_Zero() {
-		String userInput = "0" + System.getProperty("line.separator") + "1" + System.getProperty("line.separator");
-				
-		ByteArrayInputStream in = new ByteArrayInputStream(userInput.getBytes());
+	@Order(3)
+	void testUserInput_Zero() throws Exception {
+		ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
 		System.setIn(in);
 		
 		try {
 			CreateFile creFile = new CreateFile();
 			creFile.getUserInput();
 		} catch (Exception e) {
+			// will show NoSuchElementException, because of next input data doesn't exists
 			e.printStackTrace();
-		} finally {
-			// actual message include full string with user prompt message
-			String actualMsg = out.toString();
-			
-			// expected message
-			String expectedMsg = "Invalid. Number of lines must be from 1 to 229!";
-			
-			assertTrue(actualMsg.contains(expectedMsg));
 		}
-		
-		//todo. accept multiple user input or stop next user input
-		//also need to add >229 case
+		// actual message include full string with user prompt message
+		String actualMsg = out.toString();
+
+		// expected message
+		String expectedMsg = "Invalid. Number of lines must be from 1 to 229!";
+
+		assertTrue(actualMsg.contains(expectedMsg));
 	}
 	
 	/**
 	 * test getUserInput method
-	 * abnormal case : test "input mismatch exception", when number of lines is not number
+	 * abnormal case : test number range => when number of lines is ">229"
 	 * expected      : show error message
+	 * other comment : if invalid data, will prompt user input again in actual program
 	 */
 	@Test
+	@Order(4)
+	void testUserInput_230() {
+		ByteArrayInputStream in = new ByteArrayInputStream("230".getBytes());
+		System.setIn(in);
+		
+		try {
+			CreateFile creFile = new CreateFile();
+			creFile.getUserInput();
+		} catch (Exception e) {
+			// will show NoSuchElementException, because of next input data doesn't exists
+			e.printStackTrace();
+		}
+		// actual message include full string with user prompt message
+		String actualMsg = out.toString();
+
+		// expected message
+		String expectedMsg = "Invalid. Number of lines must be from 1 to 229!";
+
+		assertTrue(actualMsg.contains(expectedMsg));
+	}
+	
+	/**
+	 * test getUserInput method
+	 * abnormal case : test wrong input data => when number of lines is not number
+	 * expected      : show error message
+	 * other comment : if invalid data, will prompt user input again in actual program
+	 */
+	@Test
+	@Order(5)
 	void testUserInput_Invalid() {
 		ByteArrayInputStream in = new ByteArrayInputStream("ABCD".getBytes());
 		System.setIn(in);
 		
-		CreateFile creFile = new CreateFile();
-		creFile.getUserInput();
+		try {
+			CreateFile creFile = new CreateFile();
+			creFile.getUserInput();
+		} catch (Exception e) {
+			// will show NoSuchElementException, because of next input data doesn't exists
+			e.printStackTrace();
+		}
 
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
@@ -177,9 +179,6 @@ class CreateFileTest {
 		String expectedMsg = "Please enter only number.";
 
 	    assertTrue(actualMsg.contains(expectedMsg));
-	    
-		//todo. accept multiple user input or stop next user input
-	    //think to test exception or not
 	}
 	
 	/**
@@ -189,6 +188,7 @@ class CreateFileTest {
 	 * expected       : show success message and check file exists or not
 	 */
 	@Test
+	@Order(6)
 	void testOutputFile_Normal() {
 		CreateFile creFile = new CreateFile();
 		creFile.outputFile();
@@ -203,7 +203,7 @@ class CreateFileTest {
 		
 		// check file exists or not
 		// if file exists do nothing
-		// if file does not exists, will throw exception
+		// if file does not exists, will show exception
 		creFile.readFile();
 	}
 	
@@ -215,6 +215,7 @@ class CreateFileTest {
 	 * other comment  : new file will be created
 	 */
 	@Test
+	@Order(7)
 	void testOutputFile_OverrideYes() {
 		ByteArrayInputStream in = new ByteArrayInputStream("y".getBytes());
 		System.setIn(in);
@@ -241,6 +242,7 @@ class CreateFileTest {
 	 * other comment  : new file will not be created
 	 */
 	@Test
+	@Order(8)
 	void testOutputFile_OverrideNo() {
 		ByteArrayInputStream in = new ByteArrayInputStream("n".getBytes());
 		System.setIn(in);
@@ -252,7 +254,7 @@ class CreateFileTest {
 		String actualMsg = out.toString();
 		
 		// expected message
-		String expectedMsg = "Program ends. Please change your file name and start again";
+		String expectedMsg = "Program ends. Please change your file name and start again!";
 		
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
@@ -261,26 +263,31 @@ class CreateFileTest {
 	 * test outputFile method
 	 * abnormal case    : test create new file
 	 * test condition : test when file exists in target path, type invalid input
-	 * expected       : if invalid input, show alert message
-	 * other comment  : new file will not be created
+	 * expected       : if invalid input, show error message
+	 * other comment  : new file will not be created, will prompt user input again in actual program
 	 */
-//	@Test
-//	void testOutputFile_InvalidInput() {
-//		ByteArrayInputStream in = new ByteArrayInputStream("AB".getBytes());
-//		System.setIn(in);
-//		
-//		CreateFile creFile = new CreateFile();
-//		creFile.outputFile();
-//		
-//		// actual message include full string with user prompt message
-//		String actualMsg = out.toString();
-//		
-//		// expected message
-//		String expectedMsg = "Please enter only y or n.";
-//		
-//		assertTrue(actualMsg.contains(expectedMsg));
-//	}
-	
+	@Test
+	@Order(9)
+	void testOutputFile_InvalidInput() {
+		ByteArrayInputStream in = new ByteArrayInputStream("123".getBytes());
+		System.setIn(in);
+		
+		try {
+			CreateFile creFile = new CreateFile();
+			creFile.outputFile();
+		} catch (Exception e) {
+			// will show NoSuchElementException, because of next input data doesn't exists
+			e.printStackTrace();
+		}
+		
+		// actual message include full string with user prompt message
+		String actualMsg = out.toString();
+		
+		// expected message
+		String expectedMsg = "Please enter only y or n.";
+		
+		assertTrue(actualMsg.contains(expectedMsg));
+	}
 	
 	/**
 	 * test writeFile method
@@ -289,8 +296,13 @@ class CreateFileTest {
 	 * expected       : show success message
 	 */
 	@Test
+	@Order(10)
 	void testWriteFile() {
+		ByteArrayInputStream in = new ByteArrayInputStream("220".getBytes());
+		System.setIn(in);
+		
 		CreateFile creFile = new CreateFile();
+		creFile.getUserInput();
 		creFile.writeFile();
 		
 		// actual message include full string with user prompt message
@@ -300,7 +312,28 @@ class CreateFileTest {
 		String expectedMsg = "Successfully wrote to the file.";
 		
 		assertTrue(actualMsg.contains(expectedMsg));
+	}
+
+	/**
+	 * test readFile method
+	 * normal case    : test read file
+	 * test condition : test after testWriteFile method is called
+	 * expected       : show success message
+	 */
+	@Test
+	@Order(11)
+	void testReadFile() {
+		CreateFile creFile = new CreateFile();
+		creFile.readFile();
 		
-		// to do. x need to pass
+		// actual message include full string with user prompt message
+		String actualMsg = out.toString();
+		
+		// expected message
+		String expectedMsg1 = "Number of lines in file : 220";
+		String expectedMsg2 = "Number of characters in one line : 100";
+		
+		assertTrue(actualMsg.contains(expectedMsg1));
+		assertTrue(actualMsg.contains(expectedMsg2));
 	}
 }
