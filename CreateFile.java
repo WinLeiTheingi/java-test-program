@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Each line consists of a string that is unique with 100 characters long.
  * 
  * x will be prompt from user.
- * x must be any number from 1 to 299.
+ * x must be any number from 1 to 229.
  * 
  * If file exists in target path, ask user to override or not.
  * 
@@ -43,6 +43,10 @@ public class CreateFile {
 	 */
 	public CreateFile() {
 		System.out.println("Welcome from my program!" + "\r\n");
+		
+		// output file path
+		String home = System.getProperty("user.home");
+		newFile = new File(home + File.separator + OUTPUT_FILE_NAME);
 	}
 
 	/**
@@ -57,12 +61,11 @@ public class CreateFile {
 		// Create a Scanner object to read user input(number of lines)
 		sc = new Scanner(System.in);
 
-		System.out.print("Enter Number of lines from 1 to 299 to write in file : ");
+		System.out.print("Enter Number of lines from 1 to 229 to write in file : ");
 		
 		try {
 			// Read user input as integer
 			x = sc.nextInt();
-			
 		} catch (InputMismatchException e) {
 			System.out.println("Please enter only number." + "\r\n");
 			getUserInput();
@@ -85,19 +88,18 @@ public class CreateFile {
 
 	/**
 	 * checkNumber Method
-	 * Check number range, whether input number is between 1 to 299 or not.
+	 * Check number range, whether input number is between 1 to 229 or not.
 	 * 
 	 * If valid range, return true.
 	 * If out of range, return false.
 	 * 
 	 */
 	public boolean checkNumber(int num) {
-
-		// if number is between 1 to 299, return true
-		if (num >= 1 && num <= 299) {
+		// if number is between 1 to 229, return true
+		if (num >= 1 && num <= 229) {
 			return true;
 		} else {
-			System.out.println("Invalid. Number of lines must be from 1 to 299!" + "\r\n");
+			System.out.println("Invalid. Number of lines must be from 1 to 229!" + "\r\n");
 			return false;
 		}
 	}
@@ -112,17 +114,13 @@ public class CreateFile {
 	 * 
 	 */
 	public boolean outputFile() {
-		String home = System.getProperty("user.home");
-
 		try {
-			newFile = new File(home + File.separator + OUTPUT_FILE_NAME);
-
 			// create new file
 			if (newFile.createNewFile()) {
 				System.out.println("File created in \"" + newFile + "\"" + "\r\n");
 				return true;
 			} else {
-				// same file exist in target path
+				// same file exists in target path
 				System.out.println(
 						"File already exists in \"" + newFile + "\"." + "\r\n" + "Do you want to override file?(y/n)");
 
