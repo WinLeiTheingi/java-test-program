@@ -1,5 +1,6 @@
-package appli;
-
+/**
+ * CreateFile.java
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -56,11 +57,12 @@ public class CreateFile {
 		// Create a Scanner object to read user input(number of lines)
 		sc = new Scanner(System.in);
 
-		System.out.println("Enter Number of lines from 1 to 299 to write in file : ");
+		System.out.print("Enter Number of lines from 1 to 299 to write in file : ");
 		
 		try {
 			// Read user input as integer
 			x = sc.nextInt();
+			
 		} catch (InputMismatchException e) {
 			System.out.println("Please enter only number." + "\r\n");
 			getUserInput();
@@ -240,7 +242,7 @@ public class CreateFile {
 		crtfile.getUserInput();
 
 		// call outputFile
-		// if true, continue.
+		// if true, continue to write file.
 		// else, ends programs. 
 		if (crtfile.outputFile()) {
 			// call writeFile
@@ -248,16 +250,16 @@ public class CreateFile {
 
 			// call readFile
 			crtfile.readFile();
+			
+			// used memory after program ends
+			long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+			
+			// actual memory usage
+			long actualMemUsed = afterUsedMem - beforeUsedMem;
+
+			System.out.println("Program Used memory in megabytes : " + bytesToMegabytes(actualMemUsed) + "MB");
 		}
 		// scanner closed
-		sc.close();
-
-		// used memory after program ends
-		long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-		
-		// actual memory usage
-		long actualMemUsed = afterUsedMem - beforeUsedMem;
-
-		System.out.println("Program Used memory in megabytes : " + bytesToMegabytes(actualMemUsed) + "MB");
+		sc.close();		
 	}
 }
