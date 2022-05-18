@@ -1,13 +1,12 @@
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -26,13 +25,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 class CreateFileTest {
 	// output file path
 	private static File newFile;
-	
+
 	// output file name
 	private static final String OUTPUT_FILE_NAME = "outputData.txt";
-	
+
 	// read output
 	private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -60,19 +59,19 @@ class CreateFileTest {
 	void testUserInput_Min() {
 		ByteArrayInputStream in = new ByteArrayInputStream("1".getBytes());
 		System.setIn(in);
-		
+
 		CreateFile creFile = new CreateFile();
 		creFile.getUserInput();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "1 line will write in file.";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	
+
 	/**
 	 * test getUserInput method
 	 * normal case : test maximum value => when number of lines is "229"
@@ -83,19 +82,19 @@ class CreateFileTest {
 	void testUserInput_Max() {
 		ByteArrayInputStream in = new ByteArrayInputStream("229".getBytes());
 		System.setIn(in);
-		
+
 		CreateFile creFile = new CreateFile();
 		creFile.getUserInput();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "229 lines will write in file.";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	  
+
 	/**
 	 * test getUserInput method
 	 * abnormal case : test number range => when number of lines is "<1"
@@ -104,17 +103,15 @@ class CreateFileTest {
 	 */
 	@Test
 	@Order(3)
-	void testUserInput_Zero() throws Exception {
+	void testUserInput_Zero() {
 		ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
 		System.setIn(in);
-		
-		try {
-			CreateFile creFile = new CreateFile();
-			creFile.getUserInput();
-		} catch (Exception e) {
-			// will show NoSuchElementException, because of next input data doesn't exists
-			e.printStackTrace();
-		}
+
+		CreateFile creFile = new CreateFile();
+
+		// throws NoSuchElementException, because of next input data doesn't exists
+		assertThrows(NoSuchElementException.class, () -> creFile.getUserInput());
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
 
@@ -123,7 +120,7 @@ class CreateFileTest {
 
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	
+
 	/**
 	 * test getUserInput method
 	 * abnormal case : test number range => when number of lines is ">229"
@@ -135,14 +132,12 @@ class CreateFileTest {
 	void testUserInput_230() {
 		ByteArrayInputStream in = new ByteArrayInputStream("230".getBytes());
 		System.setIn(in);
-		
-		try {
-			CreateFile creFile = new CreateFile();
-			creFile.getUserInput();
-		} catch (Exception e) {
-			// will show NoSuchElementException, because of next input data doesn't exists
-			e.printStackTrace();
-		}
+
+		CreateFile creFile = new CreateFile();
+
+		// throws NoSuchElementException, because of next input data doesn't exists
+		assertThrows(NoSuchElementException.class, () -> creFile.getUserInput());
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
 
@@ -151,7 +146,7 @@ class CreateFileTest {
 
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	
+
 	/**
 	 * test getUserInput method
 	 * abnormal case : test wrong input data => when number of lines is not number
@@ -163,14 +158,11 @@ class CreateFileTest {
 	void testUserInput_Invalid() {
 		ByteArrayInputStream in = new ByteArrayInputStream("ABCD".getBytes());
 		System.setIn(in);
-		
-		try {
-			CreateFile creFile = new CreateFile();
-			creFile.getUserInput();
-		} catch (Exception e) {
-			// will show NoSuchElementException, because of next input data doesn't exists
-			e.printStackTrace();
-		}
+
+		CreateFile creFile = new CreateFile();
+
+		// throws NoSuchElementException, because of next input data doesn't exists
+		assertThrows(NoSuchElementException.class, () -> creFile.getUserInput());
 
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
@@ -178,9 +170,9 @@ class CreateFileTest {
 		// expected message
 		String expectedMsg = "Please enter only number.";
 
-	    assertTrue(actualMsg.contains(expectedMsg));
+		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	
+
 	/**
 	 * test outputFile method
 	 * normal case    : test create new file
@@ -192,21 +184,21 @@ class CreateFileTest {
 	void testOutputFile_Normal() {
 		CreateFile creFile = new CreateFile();
 		creFile.outputFile();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "File created";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
-		
+
 		// check file exists or not
 		// if file exists do nothing
 		// if file does not exists, will show exception
 		creFile.readFile();
 	}
-	
+
 	/**
 	 * test outputFile method
 	 * normal case    : test create new file
@@ -219,17 +211,17 @@ class CreateFileTest {
 	void testOutputFile_OverrideYes() {
 		ByteArrayInputStream in = new ByteArrayInputStream("y".getBytes());
 		System.setIn(in);
-		
+
 		CreateFile creFile = new CreateFile();
 		creFile.outputFile();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg1 = "File already exists";
 		String expectedMsg2 = "Do you want to override file?(y/n)";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg1));
 		assertTrue(actualMsg.contains(expectedMsg2));
 	}
@@ -246,16 +238,16 @@ class CreateFileTest {
 	void testOutputFile_OverrideNo() {
 		ByteArrayInputStream in = new ByteArrayInputStream("n".getBytes());
 		System.setIn(in);
-		
+
 		CreateFile creFile = new CreateFile();
 		creFile.outputFile();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "Program ends. Please change your file name and start again!";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
 
@@ -271,24 +263,21 @@ class CreateFileTest {
 	void testOutputFile_InvalidInput() {
 		ByteArrayInputStream in = new ByteArrayInputStream("123".getBytes());
 		System.setIn(in);
-		
-		try {
-			CreateFile creFile = new CreateFile();
-			creFile.outputFile();
-		} catch (Exception e) {
-			// will show NoSuchElementException, because of next input data doesn't exists
-			e.printStackTrace();
-		}
-		
+
+		CreateFile creFile = new CreateFile();
+
+		// throws NoSuchElementException, because of next input data doesn't exists
+		assertThrows(NoSuchElementException.class, () -> creFile.outputFile());
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "Please enter only y or n.";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
-	
+
 	/**
 	 * test writeFile method
 	 * normal case    : test write file
@@ -300,17 +289,17 @@ class CreateFileTest {
 	void testWriteFile() {
 		ByteArrayInputStream in = new ByteArrayInputStream("220".getBytes());
 		System.setIn(in);
-		
+
 		CreateFile creFile = new CreateFile();
 		creFile.getUserInput();
 		creFile.writeFile();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg = "Successfully wrote to the file.";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg));
 	}
 
@@ -325,14 +314,14 @@ class CreateFileTest {
 	void testReadFile() {
 		CreateFile creFile = new CreateFile();
 		creFile.readFile();
-		
+
 		// actual message include full string with user prompt message
 		String actualMsg = out.toString();
-		
+
 		// expected message
 		String expectedMsg1 = "Number of lines in file : 220";
 		String expectedMsg2 = "Number of characters in one line : 100";
-		
+
 		assertTrue(actualMsg.contains(expectedMsg1));
 		assertTrue(actualMsg.contains(expectedMsg2));
 	}
