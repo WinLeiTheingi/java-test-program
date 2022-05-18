@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class CreateFile {
 	// user input for number of lines
 	private int x;
-	
+
 	// output file path
 	private File newFile;
 
@@ -33,7 +33,7 @@ public class CreateFile {
 
 	// megabyte
 	private static final long MEGABYTE = 1024L * 1024L;
-	
+
 	// Scanner object
 	private static Scanner sc;
 	
@@ -43,7 +43,7 @@ public class CreateFile {
 	 */
 	public CreateFile() {
 		System.out.println("Welcome from my program!" + "\r\n");
-		
+
 		// output file path
 		String home = System.getProperty("user.home");
 		newFile = new File(home + File.separator + OUTPUT_FILE_NAME);
@@ -60,14 +60,14 @@ public class CreateFile {
 	public void getUserInput() {
 		// Create a Scanner object to read user input(number of lines)
 		sc = new Scanner(System.in);
-		
+
 		// prompt user input
 		System.out.print("Enter Number of lines from 1 to 229 to write in file : ");
-		
+
 		try {
 			// Read user input as integer
 			x = sc.nextInt();
-			
+
 			// Check Number Range
 			if (!checkNumber(x)) {
 				getUserInput();
@@ -122,10 +122,10 @@ public class CreateFile {
 
 				// Create a Scanner object to read user input(y/n)
 				sc = new Scanner(System.in);
-				
-				while(true) {
+
+				while (true) {
 					String strReply = sc.nextLine();
-					
+
 					if (strReply.equals("y")) {
 						newFile.delete();
 						break;
@@ -135,7 +135,7 @@ public class CreateFile {
 					} else {
 						System.out.println("Please enter only y or n.");
 					}
-					
+
 				}
 				// call itself to create new file
 				outputFile();
@@ -173,11 +173,9 @@ public class CreateFile {
 				}
 				strFront = "Line No." + strFront + i + ",";
 
-				// loop for 100 characters string in one line
-				for (int j = 1; j <= 100 - strFront.length(); j++) {
-					strEnd += "A";
-				}
-				
+				// fill up to 100 characters
+				strEnd = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678";
+
 				// write for one line
 				myWriter.write(strFront + strEnd + "\r\n");
 			}
@@ -203,7 +201,7 @@ public class CreateFile {
 			Path file = Paths.get(newFile.toString());
 			long count = Files.lines(file).count();
 			System.out.println("Number of lines in file : " + count);
-			
+
 			// Read character count in one line
 			Scanner myReader = new Scanner(newFile);
 			// if data exists in text file, read first line and print length.
@@ -246,23 +244,23 @@ public class CreateFile {
 
 		// call outputFile
 		// if true, continue to write file.
-		// else, ends programs. 
+		// else, ends programs.
 		if (crtfile.outputFile()) {
 			// call writeFile
 			crtfile.writeFile();
 
 			// call readFile
 			crtfile.readFile();
-			
+
 			// used memory after program ends
 			long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-			
+
 			// actual memory usage
 			long actualMemUsed = afterUsedMem - beforeUsedMem;
 
 			System.out.println("Program Used memory in megabytes : " + bytesToMegabytes(actualMemUsed) + "MB");
 		}
 		// scanner closed
-		sc.close();		
+		sc.close();
 	}
 }
