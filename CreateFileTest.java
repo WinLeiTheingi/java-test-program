@@ -3,11 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -23,23 +21,8 @@ import org.junit.jupiter.api.TestMethodOrder;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CreateFileTest {
-	// output file path
-	private static File newFile;
-
-	// output file name
-	private static final String OUTPUT_FILE_NAME = "outputData.txt";
-
 	// read output
 	private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		String home = System.getProperty("user.home");
-		newFile = new File(home + File.separator + OUTPUT_FILE_NAME);
-	}
 
 	/**
 	 * @throws java.lang.Exception
