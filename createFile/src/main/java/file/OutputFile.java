@@ -17,14 +17,12 @@ public class OutputFile {
 	 * If no, do nothing and return false.
 	 * 
 	 */
-	@SuppressWarnings("resource")
 	public boolean output(Scanner sc) {
 		// Create a Scanner object to read user input(y/n)
 		sc = new Scanner(System.in);
 		
 		try {
-			Main mainJava = new Main();
-			File newFile = mainJava.getFilePath();
+			File newFile = Main.getFilePath();
 			// create new file
 			if (newFile.createNewFile()) {
 				System.out.println("File created in \"" + newFile + "\"" + ".\r\n");
@@ -56,6 +54,9 @@ public class OutputFile {
 			System.out.println("An error occurred in output file.");
 			e.printStackTrace();
 			return false;
+		} finally {
+			// scanner closed
+			sc.close();
 		}
 	}
 }

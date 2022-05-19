@@ -12,12 +12,10 @@ import java.util.Scanner;
 import appli.Main;
 
 public class AccessFile {
-	Main mainJava;
 	File newFile;
 	
 	public AccessFile() {
-		mainJava = new Main();
-		newFile = mainJava.getFilePath();
+		newFile = Main.getFilePath();
 	}
 
 	/**
@@ -31,6 +29,7 @@ public class AccessFile {
 			FileWriter myWriter = new FileWriter(newFile);
 			String strFront = ""; // line no.
 			String strEnd = ""; // left string to fill up to 100 characters
+			Main mainJava = new Main();
 
 			// loop for number of lines
 			for (int i = 1; i <= mainJava.getNumLines(); i++) {

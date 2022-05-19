@@ -5,7 +5,7 @@ apply plugin: 'application'
 archivesBaseName = 'createFile'
 version = '1.0'
 
-mainClassName = 'Main'
+mainClassName = 'appli.Main'
 
 // Java target version
 sourceCompatibility = 1.8
@@ -16,7 +16,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'Main'
+        attributes 'Main-Class': 'appli.Main'
     }
 }
 

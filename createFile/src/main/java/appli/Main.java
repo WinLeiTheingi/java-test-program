@@ -5,10 +5,11 @@ import java.util.Scanner;
 
 import file.AccessFile;
 import file.OutputFile;
+import input.UserInput;
 
 public class Main {
 	// user input for number of lines
-	private int numLines;
+	private static int numLines;
 
 	// output file name
 	private static final String OUTPUT_FILE_NAME = "outputData.txt";
@@ -20,6 +21,7 @@ public class Main {
 	private static Scanner sc;
 
 	public Main() {
+		
 	}
 	
 	/**
@@ -32,10 +34,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("Welcome from my program!" + "\r\n");
+		
 		// to calculate memory usage, marks used memory before program starts
 		long beforeUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-
-		System.out.println("Welcome from my program!" + "\r\n");
 		
 		// call getUserInput
 		UserInput user = new UserInput();
@@ -58,14 +60,10 @@ public class Main {
 			long actualMemUsed = afterUsedMem - beforeUsedMem;
 
 			System.out.println("Program Used memory in megabytes : " + bytesToMegabytes(actualMemUsed) + "MB");
-
 		}
-
-		// scanner closed
-		sc.close();
 	}
 
-	public File getFilePath() {
+	public static File getFilePath() {
 		// output file path
 		String home = System.getProperty("user.home");
 		File newFile = new File(home + File.separator + OUTPUT_FILE_NAME);
@@ -77,7 +75,6 @@ public class Main {
 	}
 
 	public void setNumLines(int numLines) {
-		this.numLines = numLines;
+		Main.numLines = numLines;
 	}
-
 }
