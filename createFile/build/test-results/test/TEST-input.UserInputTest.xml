@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="input.UserInputTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-05-19T12:12:08" hostname="Wins-MacBook-Air.local" time="0.057">
+  <properties/>
+  <testcase name="testUserInput_Zero()" classname="input.UserInputTest" time="0.04"/>
+  <testcase name="testUserInput_230()" classname="input.UserInputTest" time="0.004"/>
+  <testcase name="testUserInput_Max()" classname="input.UserInputTest" time="0.003"/>
+  <testcase name="testUserInput_Min()" classname="input.UserInputTest" time="0.002"/>
+  <testcase name="testUserInput_Invalid()" classname="input.UserInputTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
