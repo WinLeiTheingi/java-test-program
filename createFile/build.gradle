@@ -32,9 +32,6 @@ dependencies {
 test {
     // Enable JUnit 5
     useJUnitPlatform()
-    
-    include 'input/**'
-    include 'file/**'
 
     // Always run tests, even when nothing changed.
     dependsOn 'cleanTest'
